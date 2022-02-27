@@ -3,8 +3,6 @@ conway.py
 A simple Python/matplotlib implementation of Conway's Game of Life.
 """
 
-import re
-import sys, argparse
 from turtle import position
 import numpy as np
 import matplotlib.pyplot as plt 
@@ -114,10 +112,11 @@ def findShape(grid):
     grid = shave(grid)
     for _ in range(4):
         print(grid)
+        position = 0
         for shape in entities:
             if np.array_equal(grid, shape):
-                position = entities.index(shape)
                 return entityName[position]
+            position += 1
         grid = np.rot90(grid)
     return "none"
 
@@ -182,6 +181,27 @@ def growingShapes(grid):
                 shapes.append(shape)
     return shapes
 
+def indexShape(shapes):
+    shapeDict = {
+        "block": 0,
+        "beehive": 0,
+        "loaf": 0,
+        "tub": 0, 
+        "blinker": 0,
+        "toad": 0,
+        "beacon": 0,
+        "glider": 0,
+        "lwShip": 0
+    }
+    totalShapes = 0
+    for shape in shapes:
+        if findShape(shape) != "none":
+            shapeDict[findShape(shape)] += 1
+            totalShapes += 1
+    print(shapeDict)
+    return shapeDict, totalShapes
+
+
 def inputText(file):
     with open(file) as f:
         lines = f.readlines()
@@ -241,8 +261,7 @@ def update(frameNum, img, grid):
     iteration += 1
     analyze = growingZeros(grid)
     shapes = growingShapes(analyze)
-    for shape in shapes:
-        print(findShape(shape))
+    shapeDict, total = indexShape(shapes)
     grid[:] = newGrid[:]
     return img,
 
@@ -263,7 +282,7 @@ def main():
     if os.path.exists(path):
         frameCount, grid = inputText(path)
         addStructure(0, 0, grid, loaf)
-        addStructure (6, 6, grid, gliderA)
+        addStructure (6, 6, grid, blinkerA)
     else:
         width = int(input("Universe Width: ") or "42")
         height = int(input("Universe Height: ") or "42")
