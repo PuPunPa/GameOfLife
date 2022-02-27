@@ -3,7 +3,9 @@ conway.py
 A simple Python/matplotlib implementation of Conway's Game of Life.
 """
 
+import re
 import sys, argparse
+from turtle import position
 import numpy as np
 import matplotlib.pyplot as plt 
 import matplotlib.animation as animation
@@ -112,12 +114,11 @@ def findShape(grid):
     grid = shave(grid)
     for _ in range(4):
         print(grid)
-        try :
-            position = entities.index(grid)
-            print(position)
-            return entityName(position)
-        except ValueError:
-            grid = np.rot90(grid)
+        for shape in entities:
+            if np.array_equal(grid, shape):
+                position = entities.index(shape)
+                return entityName[position]
+        grid = np.rot90(grid)
     return "none"
 
 def growingZeros(grid):
@@ -154,8 +155,7 @@ def growingZeros(grid):
         if right == OFF and ("%s %s" % ((i+1)%width, j)) not in neighbors:
             neighbors.append("%s %s" % ((i+1)%width, j))
 
-    print('\n'.join([''.join(['{:4}'.format(item) for item in row])
-      for row in grid]))
+    print(grid)
     print("-----------------------------------------------------")
     return grid
 
@@ -175,18 +175,10 @@ def growingShapes(grid):
                     if grid[a][b] < 2:
                         shape[a][b] = grid[a][b]
                     grid[a][b] = 2
-                    up = grid[a][(b-1)%height]
-                    down = grid[a][(b+1)%height]
-                    left = grid[(a-1)%width][b]
-                    right = grid[(a+1)%width][b]
-                    if up < 2:
-                        neighbors.append("%s %s" % (a, (b-1)%height))
-                    if down < 2:
-                        neighbors.append("%s %s" % (a, (b+1)%height))
-                    if left < 2:
-                        neighbors.append("%s %s" % ((a-1)%width, b))
-                    if right < 2:
-                        neighbors.append("%s %s" % ((a+1)%width, b))
+                    for y in range(b-1, b+2):
+                        for x in range (a-1, a+2):
+                            if grid[x%width][y%height] < 2:
+                                neighbors.append("%s %s" % (x%width, y%height))
                 shapes.append(shape)
     return shapes
 
@@ -271,7 +263,7 @@ def main():
     if os.path.exists(path):
         frameCount, grid = inputText(path)
         addStructure(0, 0, grid, loaf)
-        addStructure (6, 6, grid, blinkerA)
+        addStructure (6, 6, grid, gliderA)
     else:
         width = int(input("Universe Width: ") or "42")
         height = int(input("Universe Height: ") or "42")
