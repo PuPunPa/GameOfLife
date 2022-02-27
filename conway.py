@@ -9,94 +9,187 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import os.path
 
-ON = 255
+ON = 1
 OFF = 0
 vals = [ON, OFF]
 
 #Structures
 #Stills
-block = np.array([[255, 255],
-                    [255, 255]])
+block = np.array([[ON, ON],
+                  [ON, ON]])
 
-beehive = np.array([[0, 255, 255, 0],
-                    [255, 0, 0, 255],
-                    [0, 255, 255, 0]])
+beehive = np.array([[OFF, ON,  ON,  OFF],
+                    [ON,  OFF, OFF, ON],
+                    [OFF, ON,  ON,  OFF]])
 
-loaf = np.array([[0, 255, 255, 0],
-                [255, 0, 0, 255],
-                [0, 255, 0, 255],
-                [0, 0, 255, 0]])
+loaf = np.array([[OFF, ON,  ON,  OFF],
+                 [ON,  OFF, OFF, ON],
+                 [OFF, ON,  OFF, ON],
+                 [OFF, OFF, ON,  OFF]])
 
-boat = np.array([[255, 255, 0],
-                [255, 0, 255],
-                [0, 255, 0]])
+boat = np.array([[ON,  ON,  OFF],
+                 [ON,  OFF, ON],
+                 [OFF, ON,  OFF]])
 
-tub = np.array([[0, 255, 0],
-                [255, 0, 255],
-                [0, 255, 0]])
+tub = np.array([[OFF, ON,  OFF],
+                [ON,  OFF, ON],
+                [OFF, ON,  OFF]])
 
 #Oscilators
-blinkerA = np.array([[255], 
-                    [255], 
-                    [255]])
+blinkerA = np.array([[ON], 
+                     [ON], 
+                     [ON]])
 
-blinkerB = np.array([[255, 255, 255]])
+blinkerB = np.array([[ON, ON, ON]])
 
-toadA = np.array([[0, 0, 255, 0],
-           [255, 0, 0, 255],
-           [255, 0, 0, 255],
-           [0, 255, 0, 0]])
+toadA = np.array([[OFF, OFF, ON,  OFF],
+                  [ON,  OFF, OFF, ON],
+                  [ON,  OFF, OFF, ON],
+                  [OFF, ON,  OFF, OFF]])
 
-toadB = np.array([[0, 255, 255, 255],
-           [255, 255, 255, 0]])
+toadB = np.array([[OFF, ON, ON, ON],
+                  [ON,  ON, ON, OFF]])
 
-beaconA = np.array([[255, 255, 0, 0],
-                    [255, 255, 0, 0],
-                    [0, 0, 255, 255],
-                    [0, 0, 255, 255]])
+beaconA = np.array([[ON,  ON,  OFF, OFF],
+                    [ON,  ON,  OFF, OFF],
+                    [OFF, OFF, ON, ON],
+                    [OFF, OFF, ON, ON]])
 
-beaconB = np.array([[255, 255, 0, 0],
-                    [255, 0, 0, 0],
-                    [0, 0, 0, 255],
-                    [0, 0, 255, 255]])
+beaconB = np.array([[ON,  ON,  OFF, OFF],
+                    [ON,  OFF, OFF, OFF],
+                    [OFF, OFF, OFF, ON],
+                    [OFF, OFF, ON,  ON]])
 
 #Spaceships
-gliderA = np.array([[0, 255, 0], 
-                    [0, 0, 255], 
-                    [255, 255, 255]])
+gliderA = np.array([[OFF, ON,  OFF], 
+                    [OFF, OFF, ON], 
+                    [ON,  ON, ON]])
 
-gliderB = np.array([[255, 0, 255], 
-                    [0, 255, 255], 
-                    [0, 255, 0]])
+gliderB = np.array([[ON,  OFF, ON], 
+                    [OFF, ON,  ON], 
+                    [OFF, ON,  OFF]])
 
-gliderC = np.array([[0, 0, 255], 
-                    [255, 0, 255], 
-                    [0,  255, 255]])
+gliderC = np.array([[OFF, OFF, ON], 
+                    [ON,  OFF, ON], 
+                    [OFF, ON,  ON]])
 
-gliderD = np.array([[255, 0, 0], 
-                    [0, 255, 255], 
-                    [255, 255, 0]])
+gliderD = np.array([[ON,  OFF, OFF], 
+                    [OFF, ON,  ON], 
+                    [ON,  ON,  OFF]])
 
-lwShipA = np.array([[255, 0, 0, 255, 0],
-                    [0, 0, 0, 0, 255],
-                    [255, 0, 0, 0, 255],
-                    [0, 255, 255, 255, 255]])
+lwShipA = np.array([[ON,  OFF, OFF, ON,  OFF],
+                    [OFF, OFF, OFF, OFF, ON],
+                    [ON,  OFF, OFF, OFF, ON],
+                    [OFF, ON,  ON,  ON,  ON]])
 
-lwShipB = np.array([[0, 0, 255, 255, 0],
-                    [255, 255, 0, 255, 255],
-                    [255, 255, 255, 255, 0],
-                    [0, 255, 255, 0, 0]])
+lwShipB = np.array([[OFF, OFF, ON,  ON,  OFF],
+                    [ON,  ON,  OFF, ON,  ON],
+                    [ON,  ON,  ON,  ON,  OFF],
+                    [OFF, ON,  ON,  OFF, OFF]])
 
-lwShipC = np.array([[0, 255, 255, 255, 255],
-                    [255, 0, 0, 0, 255],
-                    [0, 0, 0, 0, 255],
-                    [255, 0, 0, 255, 0]])
+lwShipC = np.array([[OFF, ON,  ON,  ON,  ON],
+                    [ON,  OFF, OFF, OFF, ON],
+                    [OFF, OFF, OFF, OFF, ON],
+                    [ON,  OFF, OFF, ON,  OFF]])
 
-lwShipD = np.array([[0, 255, 255, 0, 0],
-                    [255, 255, 255, 255, 0],
-                    [255, 255, 0, 255, 255],
-                    [0, 0, 255, 255, 0]])
-                    
+lwShipD = np.array([[OFF, ON,  ON,  OFF, OFF],
+                    [ON,  ON,  ON,  ON,  OFF],
+                    [ON,  ON,  OFF, ON,  ON],
+                    [OFF, OFF, ON,  ON,  OFF]])
+
+iteration = 0
+
+entities = [block, beehive, loaf, tub, blinkerA, blinkerB, toadA, toadB, beaconA, beaconB, gliderA, gliderB, gliderC, gliderD, lwShipA, lwShipB, lwShipC, lwShipD]
+entityName = ["block", "beehive", "loaf", "tub", "blinker", "blinker", "toad", "toad", "beacon", "beacon", "glider", "glider", "glider", "glider", "lwShip", "lwShip", "lwShip", "lwShip"]
+
+def shave(grid):
+    for i in range(4):
+        grid = grid[~np.all(grid == 0, axis=1)]
+        grid = np.rot90(grid)
+    return grid
+
+def findShape(grid):
+    grid = shave(grid)
+    for _ in range(4):
+        print(grid)
+        try :
+            position = entities.index(grid)
+            print(position)
+            return entityName(position)
+        except ValueError:
+            grid = np.rot90(grid)
+    return "none"
+
+def growingZeros(grid):
+    width, height = grid.shape
+    neighbors = []
+    #find candidates
+    for j in range(height):
+        for i in range(width):
+            if grid[i][j] == OFF:
+                up = grid[i][(j-1)%height]
+                down = grid[i][(j+1)%height]
+                left = grid[(i-1)%width][j]
+                right = grid[(i+1)%width][j]
+                if (up + down + left + right) < ON*2:
+                    neighbors.append("%s %s" % (i, j))
+    
+    #flood fill
+    while(len(neighbors) > 0):
+        i, j = neighbors.pop(0).split(" ")
+        i = int(i)
+        j = int(j)
+        #print("[%s, %s]" % (x, y))
+        grid[i][j] = 2
+        up = grid[i][(j-1)%height]
+        down = grid[i][(j+1)%height]
+        left = grid[(i-1)%width][j]
+        right = grid[(i+1)%width][j]
+        if up == OFF and ("%s %s" % (i, (j-1)%height)) not in neighbors:
+            neighbors.append("%s %s" % (i, (j-1)%height))
+        if down == OFF and ("%s %s" % (i, (j+1)%height)) not in neighbors:
+            neighbors.append("%s %s" % (i, (j+1)%height))
+        if left == OFF and ("%s %s" % ((i-1)%width, j)) not in neighbors:
+            neighbors.append("%s %s" % ((i-1)%width, j))
+        if right == OFF and ("%s %s" % ((i+1)%width, j)) not in neighbors:
+            neighbors.append("%s %s" % ((i+1)%width, j))
+
+    print('\n'.join([''.join(['{:4}'.format(item) for item in row])
+      for row in grid]))
+    print("-----------------------------------------------------")
+    return grid
+
+def growingShapes(grid):
+    width, height = grid.shape
+    neighbors = []
+    shapes = []
+    for j in range(height):
+        for i in range(width):
+            if grid[i][j] < 2:
+                shape = np.zeros(width*height).reshape(width, height)
+                neighbors.append("%s %s" % (i, j))
+                while(len(neighbors) > 0):
+                    a, b = neighbors.pop(0).split(" ")
+                    a = int(a)
+                    b = int(b)
+                    if grid[a][b] < 2:
+                        shape[a][b] = grid[a][b]
+                    grid[a][b] = 2
+                    up = grid[a][(b-1)%height]
+                    down = grid[a][(b+1)%height]
+                    left = grid[(a-1)%width][b]
+                    right = grid[(a+1)%width][b]
+                    if up < 2:
+                        neighbors.append("%s %s" % (a, (b-1)%height))
+                    if down < 2:
+                        neighbors.append("%s %s" % (a, (b+1)%height))
+                    if left < 2:
+                        neighbors.append("%s %s" % ((a-1)%width, b))
+                    if right < 2:
+                        neighbors.append("%s %s" % ((a+1)%width, b))
+                shapes.append(shape)
+    return shapes
+
 def inputText(file):
     with open(file) as f:
         lines = f.readlines()
@@ -112,8 +205,6 @@ def inputText(file):
         x, y = line.split(" ")
         grid[int(x), int(y)] = ON
     return generations, grid
-
-
 
 def randomGrid(N, M):
     """returns a grid of NxN random values"""
@@ -131,7 +222,7 @@ def neighbors(grid, i, j):
         for x in range (i-1, i+2):
             if grid[x%width, y%height] == ON:
                 neighbors += 1
-    return neighbors - (grid[i, j]/255)
+    return neighbors - (grid[i, j]/ON)
 
 def update(frameNum, img, grid):
     # copy grid since we require 8 neighbors for calculation
@@ -153,6 +244,13 @@ def update(frameNum, img, grid):
 
     # update data
     img.set_data(newGrid)
+    global iteration
+    print(iteration)
+    iteration += 1
+    analyze = growingZeros(grid)
+    shapes = growingShapes(analyze)
+    for shape in shapes:
+        print(findShape(shape))
     grid[:] = newGrid[:]
     return img,
 
@@ -161,7 +259,6 @@ def main():
     # Command line args are in sys.argv[1], sys.argv[2] ..
     # sys.argv[0] is the script name itself and can be ignored
     # parse arguments
-    parser = argparse.ArgumentParser(description="Runs Conway's Game of Life system.py.")
     path = "input.txt"
         
     # set animation update interval
@@ -173,7 +270,8 @@ def main():
     
     if os.path.exists(path):
         frameCount, grid = inputText(path)
-        addStructure(25, 15, grid, gliderA)
+        addStructure(0, 0, grid, loaf)
+        addStructure (6, 6, grid, blinkerA)
     else:
         width = int(input("Universe Width: ") or "42")
         height = int(input("Universe Height: ") or "42")
@@ -181,7 +279,8 @@ def main():
         # populate grid with random on/off - more off than on
         grid = randomGrid(width, height)
         # Uncomment lines to see the "glider" demo
-        #grid = np.zeros(N*N).reshape(N, N)
+        grid = np.zeros(width*height).reshape(width, height)
+        addStructure(0, 0, grid, beaconA)
 
     # set up animation
     fig, ax = plt.subplots()
